@@ -38,17 +38,21 @@ def health():
     return {
         "status": "ok", 
         "service": "Vampyr: Rise of the Night Walkers Assistant API",
-        "message": "The night awaits... �🦇"
+        "message": "The night awaits..."
     }
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
     try:
         out = CHAIN.invoke({"question": req.message})
+        print(f"✅ Respuesta generada: {out[:100]}...")
         return ChatResponse(answer=out)
     except Exception as e:
+        print(f"Error en /chat: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
             status_code=500, 
-            detail="Error al procesar tu consulta sobre Vampyr. Por favor intenta de nuevo."
+            detail=f"Error al procesar tu consulta: {str(e)}"
         )
 
