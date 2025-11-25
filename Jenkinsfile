@@ -92,8 +92,9 @@ pipeline {
                                 cd /home/VAMPYR/BACKEND_RAG_VAMPYR/
                                 git pull origin main
                                 cd ..
+
+                                docker-compose down  
                                 docker-compose up --build -d
-                            ENDSSH
                         '''
                     }
                 }
