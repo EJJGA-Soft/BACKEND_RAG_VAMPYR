@@ -76,9 +76,28 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Server') {
             steps {
-                echo 'Deploying...'
+                script {
+                    withCredentials([
+                        sshUserPrivateKey(
+                            credentialsId: 'deploy-server-ssh',
+                            keyFileVariable: 'SSH_KEY',
+                            usernameVariable: 'SSH_USER'
+                        ),
+                        string(credentialsId: 'deploy-server-host', variable: 'DEPLOY_HOST')
+                    ]) {
+                        sh """
+                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no \${SSH_USER}@\${DEPLOY_HOST} << 'ENDSSH'
+                                cd ..
+                                cd /home/VAMPYR/
+                                cd BACKEND_RAG_VAMPYR/
+                                git pull origin main
+                                
+                                docker-compose -f docker-compose.yml up --build
+                        """
+                    }
+                }
             }
         }
     }
