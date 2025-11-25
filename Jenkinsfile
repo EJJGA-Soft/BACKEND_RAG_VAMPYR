@@ -89,12 +89,10 @@ pipeline {
                     ]) {
                         sh """
                             ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no \${SSH_USER}@\${DEPLOY_HOST} << 'ENDSSH'
-                                cd ..
-                                cd /home/VAMPYR/
-                                cd BACKEND_RAG_VAMPYR/
+                                cd /home/VAMPYR/BACKEND_RAG_VAMPYR/
                                 git pull origin main
-                                
-                                docker-compose -f docker-compose.yml up --build
+                                docker-compose -f docker-compose.yml up --build -d
+                            ENDSSH
                         """
                     }
                 }
