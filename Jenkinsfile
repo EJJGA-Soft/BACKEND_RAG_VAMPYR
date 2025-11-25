@@ -5,7 +5,7 @@ pipeline {
         SONARQUBE = 'sonarqube'
         SCANNER = 'sonar-scanner'
         SONAR_PROJECT_KEY = 'vampyr-backend-rag'
-        PYTHON_VERSION = '3.9'
+        PYTHON_VERSION = '3.12'
     }
 
     stages {
@@ -25,7 +25,7 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                    python3 -m venv venv
+                    python -m venv venv || python3 -m venv venv
                     . venv/bin/activate
                     pip install --upgrade pip
                 '''
