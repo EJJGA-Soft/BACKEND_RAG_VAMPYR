@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        dockerContainer {
-            image 'python:3.12.10-slim'
-        }
-    }
+    agent any
 
     environment {
         SONARQUBE = 'sonarqube'
@@ -29,7 +25,7 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                    python -m venv venv || python3 -m venv venv
+                    python3.12 -m venv venv
                     . venv/bin/activate
                     pip install --upgrade pip
                 '''
