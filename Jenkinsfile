@@ -91,7 +91,8 @@ pipeline {
                             sshpass -p "${SSH_PASS}" ssh -o StrictHostKeyChecking=no ${SSH_USER}@${DEPLOY_HOST} << 'ENDSSH'
                                 cd /home/VAMPYR/BACKEND_RAG_VAMPYR/
                                 git pull origin main
-                                docker-compose -f docker-compose.yml up --build -d
+                                cd ..
+                                docker-compose up --build -d
                             ENDSSH
                         '''
                     }
