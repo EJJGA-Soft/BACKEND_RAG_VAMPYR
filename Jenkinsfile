@@ -1,11 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.12.10'
+        }
+    }
 
     environment {
         SONARQUBE = 'sonarqube'
         SCANNER = 'sonar-scanner'
         SONAR_PROJECT_KEY = 'vampyr-backend-rag'
-        PYTHON_VERSION = '3.12'
+        PYTHON_VERSION = '3.12.10'
     }
 
     stages {
