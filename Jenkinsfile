@@ -76,12 +76,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t vampyr-backend-rag:${BUILD_NUMBER} .'
-            }
-        }
-
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
