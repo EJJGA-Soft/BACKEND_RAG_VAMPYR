@@ -87,13 +87,13 @@ pipeline {
                         ),
                         string(credentialsId: 'deploy-server-host', variable: 'DEPLOY_HOST')
                     ]) {
-                        sh """
-                            sshpass -p '\${SSH_PASS}' ssh -o StrictHostKeyChecking=no \${SSH_USER}@\${DEPLOY_HOST} << 'ENDSSH'
+                        sh '''
+                            sshpass -p "${SSH_PASS}" ssh -o StrictHostKeyChecking=no ${SSH_USER}@${DEPLOY_HOST} << 'ENDSSH'
                                 cd /home/VAMPYR/BACKEND_RAG_VAMPYR/
                                 git pull origin main
                                 docker-compose -f docker-compose.yml up --build -d
                             ENDSSH
-                        """
+                        '''
                     }
                 }
             }
