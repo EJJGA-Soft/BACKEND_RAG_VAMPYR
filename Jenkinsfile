@@ -80,15 +80,15 @@ pipeline {
             steps {
                 script {
                     withCredentials([
-                        sshUserPrivateKey(
-                            credentialsId: 'deploy-server-ssh',
-                            keyFileVariable: 'SSH_KEY',
-                            usernameVariable: 'SSH_USER'
+                        usernamePassword(
+                            credentialsId: 'deploy-server-credentials',
+                            usernameVariable: 'SSH_USER',
+                            passwordVariable: 'SSH_PASS'
                         ),
                         string(credentialsId: 'deploy-server-host', variable: 'DEPLOY_HOST')
                     ]) {
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no \${SSH_USER}@\${DEPLOY_HOST} << 'ENDSSH'
+                            sshpass -p '\${SSH_PASS}' ssh -o StrictHostKeyChecking=no \${SSH_USER}@\${DEPLOY_HOST} << 'ENDSSH'
                                 cd /home/VAMPYR/BACKEND_RAG_VAMPYR/
                                 git pull origin main
                                 docker-compose -f docker-compose.yml up --build -d
