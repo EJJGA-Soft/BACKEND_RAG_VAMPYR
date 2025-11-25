@@ -50,17 +50,6 @@ pipeline {
             }
         }
 
-        stage('Code Quality - Linting') {
-            steps {
-                sh '''
-                    . venv/bin/activate
-                    pip install pylint flake8
-                    pylint **/*.py --exit-zero --output-format=parseable > pylint-report.txt || true
-                    flake8 . --exit-zero --format=pylint --output-file=flake8-report.txt || true
-                '''
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
