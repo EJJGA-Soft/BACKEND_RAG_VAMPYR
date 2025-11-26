@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+    
     environment {
         SONARQUBE = 'sonarqube'
         SCANNER = 'sonar-scanner'
@@ -9,6 +13,19 @@ pipeline {
     }
 
     stages {
+        stage('Stop if not main branch') {
+            steps {
+                script {
+                    if (env.GIT_BRANCH != 'origin/main' && env.BRANCH_NAME != 'main') {
+                        echo "Push recibido, pero NO es main. Cancelando pipeline."
+                        currentBuild.result = 'ABORTED'
+                        error("Stop: No es main")
+                    } else {
+                        echo "Es main, continuamos."
+                    }
+                }
+            }
+        }
 
         stage('Checkout') {
             steps {
